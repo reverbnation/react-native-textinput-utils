@@ -10,14 +10,12 @@
 
 #import <React/RCTBridge.h>
 #import <React/RCTConvert.h>
-#import "RCTTextField.h"
-#import "RCTTextView.h"
+#import <RCTText/RCTUITextField.h>
+#import <RCTText/RCTTextView.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTEventDispatcher.h>
 #import "RCTKeyboardPicker.h"
 #import "RCTTextViewExtension.h"
-#import "RCTDatePicker.h"
-#import "RCTDatePickerManager.h"
 #import "RCTKeyboardDatePicker.h"
 
 @implementation RCTKeyboardToolbar
@@ -51,8 +49,9 @@ RCT_EXPORT_METHOD(configure:(nonnull NSNumber *)reactNode
             textView = [reactNativeTextView getTextView];
         }
         else {
-            RCTTextField *reactNativeTextView = ((RCTTextField *)view);
-            textView = [reactNativeTextView textField];
+            RCTUITextField *reactNativeTextView = ((RCTUITextField *)view);
+            textView = [reactNativeTextView textInputView];
+            // [reactNativeTextView textField];
         }
         
         if (options[@"tintColor"]) {
@@ -120,7 +119,7 @@ RCT_EXPORT_METHOD(dismissKeyboard:(nonnull NSNumber *)reactNode) {
             RCTLogError(@"RCTKeyboardToolbar: TAG #%@ NOT FOUND", reactNode);
             return;
         }
-        RCTTextField *textView = ((RCTTextField *)view);
+        RCTUITextField *textView = ((RCTUITextField *)view);
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [textView resignFirstResponder];
@@ -136,11 +135,12 @@ RCT_EXPORT_METHOD(moveCursorToLast:(nonnull NSNumber *)reactNode) {
             RCTLogError(@"RCTKeyboardToolbar: TAG #%@ NOT FOUND", reactNode);
             return;
         }
-        RCTTextField *textView = ((RCTTextField *)view);
+        RCTUITextField *textView = ((RCTUITextField *)view);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            UITextPosition *position = [textView.backedTextInputView endOfDocument];
-            textView.backedTextInputView.selectedTextRange = [textView.backedTextInputView textRangeFromPosition:position toPosition:position];
+            UITextPosition *position = [textView endOfDocument];
+            // textView.selectedTextRange = [textView textRangeFromPosition:position toPosition:position];
+            [textView setSelectedTextRange:[textView textRangeFromPosition:position toPosition:position] notifyDelegate:FALSE];
         });
     }];
 }
@@ -154,7 +154,7 @@ RCT_EXPORT_METHOD(setSelectedTextRange:(nonnull NSNumber *)reactNode
             RCTLogError(@"RCTKeyboardToolbar: TAG #%@ NOT FOUND", reactNode);
             return;
         }
-        RCTTextField *textView = ((RCTTextField *)view);
+        RCTUITextField *textView = ((RCTUITextField *)view);
         
         NSNumber *startPosition = [RCTConvert NSNumber:options[@"start"]];
         NSNumber *endPosition = [RCTConvert NSNumber:options[@"length"]];
@@ -162,9 +162,9 @@ RCT_EXPORT_METHOD(setSelectedTextRange:(nonnull NSNumber *)reactNode
         NSRange range  = NSMakeRange([startPosition integerValue], [endPosition integerValue]);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            UITextPosition *from = [textView.backedTextInputView positionFromPosition:[textView.backedTextInputView beginningOfDocument] offset:range.location];
-            UITextPosition *to = [textView.backedTextInputView positionFromPosition:from offset:range.length];
-            [textView.backedTextInputView setSelectedTextRange:[textView.backedTextInputView textRangeFromPosition:from toPosition:to]];
+            UITextPosition *from = [textView positionFromPosition:[textView beginningOfDocument] offset:range.location];
+            UITextPosition *to = [textView positionFromPosition:from offset:range.length];
+            [textView setSelectedTextRange:[textView textRangeFromPosition:from toPosition:to] notifyDelegate:FALSE];
         });
     }];
 }
@@ -203,8 +203,8 @@ RCT_EXPORT_METHOD(setPickerRowByIndex:(nonnull NSNumber *)reactNode
             textView = [reactNativeTextView getTextView];
         }
         else {
-            RCTTextField *reactNativeTextView = ((RCTTextField *)view);
-            textView = [reactNativeTextView textField];
+            RCTUITextField *reactNativeTextView = ((RCTUITextField *)view);
+            textView = ((UITextField*)reactNativeTextView);
         }
         
         UIPickerView *pickerView = ((UIPickerView *)textView.inputView);

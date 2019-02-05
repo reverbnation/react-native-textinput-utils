@@ -1,7 +1,7 @@
 
 #import "RCTKeyboardDatePicker.h"
 #import <React/RCTConvert.h>
-#import "RCTDatePickerManager.h"
+#import <React/RCTViewManager.h>
 
 @implementation RCTKeyboardDatePicker
 

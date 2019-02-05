@@ -6,7 +6,7 @@
 //  Copyright © 2015 DickyT. All rights reserved.
 //
 
-#import "RCTTextView.h"
+#import <RCTText/RCTTextView.h>
 
 @interface RCTTextView (RCTTextViewExtension)
 

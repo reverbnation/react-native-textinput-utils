@@ -8,15 +8,15 @@
 
 #import "RCTTextFieldExtension.h"
 
-@implementation RCTTextField (RCTTextFieldExtension)
+@implementation RCTUITextField (RCTTextFieldExtension)
 
 - (void)setSelectedRange:(NSRange)range
 {
-    UITextPosition* beginning = self.backedTextInputView.beginningOfDocument;
-    UITextPosition* startPosition = [self.backedTextInputView positionFromPosition:beginning offset:range.location];
-    UITextPosition* endPosition = [self.backedTextInputView positionFromPosition:beginning offset:range.location + range.length];
-    UITextRange* selectionRange = [self.backedTextInputView textRangeFromPosition:startPosition toPosition:endPosition];
-    [self.backedTextInputView setSelectedTextRange:selectionRange];
+    UITextPosition* beginning = self.beginningOfDocument;
+    UITextPosition* startPosition = [self positionFromPosition:beginning offset:range.location];
+    UITextPosition* endPosition = [self positionFromPosition:beginning offset:range.location + range.length];
+    UITextRange* selectionRange = [self textRangeFromPosition:startPosition toPosition:endPosition];
+    [self setSelectedTextRange:selectionRange notifyDelegate:FALSE];
 }
 
 - (void)invalidateInputAccessoryView {

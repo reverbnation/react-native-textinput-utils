@@ -6,9 +6,9 @@
 //  Copyright © 2015 DickyT. All rights reserved.
 //
 
-#import "RCTTextField.h"
+#import <RCTText/RCTUITextField.h>
 
-@interface RCTTextField (RCTTextFieldExtension)
+@interface RCTUITextField (RCTTextFieldExtension)
 
 - (void)setSelectedRange:(NSRange)range;
 
